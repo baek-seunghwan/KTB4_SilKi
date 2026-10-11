@@ -170,5 +170,3 @@ cd frontend && npm test && npm run lint
 | | Frontend | |
 | | Backend | |
 | | AI | |
-
-<!-- TODO: 데모 영상·스크린샷이 있다면 여기에 추가 -->
