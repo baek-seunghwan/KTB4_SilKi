@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: silko
+      POSTGRES_USER: silko
+      POSTGRES_PASSWORD: silko
+    ports:
+      - "5432:5432"
+    volumes:
+      - silko-postgres:/var/lib/postgresql/data
+
+volumes:
+  silko-postgres:

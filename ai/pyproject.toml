@@ -1,0 +1,70 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "silki-ai"
+version = "0.1.0"
+description = "Silki streaming speech and semantic menu recommendation service"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.116,<1",
+  "uvicorn[standard]>=0.35,<1",
+  "pydantic>=2.11,<3",
+  "pydantic-settings>=2.10,<3",
+  "PyJWT[crypto]>=2.10,<3",
+  "google-genai>=1.30,<2",
+  "httpx>=0.28,<1",
+  "grpcio>=1.74,<2",
+  "protobuf>=6.31,<7",
+  "psycopg[binary,pool]>=3.2,<4",
+  "pgvector>=0.4,<1",
+  "sentence-transformers>=5.1,<6",
+  "torch==2.13.0; sys_platform == 'darwin'",
+  "torch==2.13.0+cpu; sys_platform != 'darwin'",
+  "webrtcvad-wheels>=2.0.14,<3",
+  "edge-tts>=7.2,<8",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[project.optional-dependencies]
+dev = [
+  "grpcio-tools>=1.74,<2",
+  "httpx2>=2.12,<3",
+  "pytest>=8.4,<9",
+  "pytest-asyncio>=1.1,<2",
+  "ruff>=0.12,<1",
+]
+
+[project.scripts]
+silki-ai = "silki_ai.app:run"
+
+[tool.hatch.build.targets.wheel]
+packages = ["silki_ai"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"prompts/query_refinement.ko.md" = "silki_ai/prompts/query_refinement.ko.md"
+
+[tool.pytest.ini_options]
+addopts = "-q"
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
+
+[tool.ruff.lint.per-file-ignores]
+# This test-only page intentionally embeds minified HTML/CSS/JavaScript.
+"silki_ai/clova_test_app.py" = ["E501"]
